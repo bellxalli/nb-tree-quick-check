@@ -1,5 +1,7 @@
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 public class NbQuickCheck {
 
@@ -14,6 +16,12 @@ public class NbQuickCheck {
     if(!tree.containsKey(root)) {
       return;
     }
+    System.out.println(root);
+
+    for(Integer t : tree.get(root))
+    {
+      preOrder(tree, t);
+    }
   }
 
   /**
@@ -24,7 +32,24 @@ public class NbQuickCheck {
    * @return the minimum value in the tree or Integer.MAX_VALUE if root is null
    */
   public static int minVal(Node<Integer> root) {
-    return -1;
+    Set<Integer> nums = new HashSet<>();
+
+    return minVal(root, nums);
+  }
+  private static int minVal(Node<Integer> root, Set<Integer> nums)
+  {
+    if(root == null || nums.contains(root.value))
+      return Integer.MAX_VALUE;
+    
+    nums.add(root.value);
+    int min = root.value;
+
+    for(Node<Integer> child : root.children)
+    {
+      min = Math.min(min, child.value);
+      return minVal(child, nums);
+    }
+    return min;
   }
   
 }
